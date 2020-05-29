@@ -9,11 +9,15 @@ while let update = bot.nextUpdateSync() {
         
         let msg = """
         Hi \(from.firstName)! You said: \(text).
-        ID:\(from.id)
-        username:\(from.username ?? "")
-        languageCode:\(from.languageCode ?? "")
-        firstName:\(from.firstName)
-        ChatId:\(message.chat.id)
+        from.id:\(from.id)
+        from.username:\(from.username ?? "")
+        from.languageCode:\(from.languageCode ?? "")
+        from.firstName:\(from.firstName)
+        message.chat.id:\(message.chat.id)
+        message.chat.username:\(message.chat.username)
+        message.chat.title:\(message.chat.title)
+        message.replyToMessage?.chat.id:\(message.replyToMessage?.chat.id)
+        message.replyToMessage?.from.id:\(message.replyToMessage?.from?.id)
         """
         
         bot.sendMessageSync(chatId: ChatId.chat(message.chat.id),text: msg)
