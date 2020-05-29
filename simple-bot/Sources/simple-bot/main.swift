@@ -6,10 +6,17 @@ let bot = TelegramBot(token: token)
 
 while let update = bot.nextUpdateSync() {
     if let message = update.message, let from = message.from, let text = message.text {
-        bot.sendMessageAsync(chatId: ChatId.chat(from.id),
-                             text: "Hi \(from.firstName)! You said: \(text).\n")
-        bot.sendMessageAsync(chatId: ChatId.chat(from.id), text:
-            "ID:\(from.id)\nusername:\(from.username ?? "")\nlanguageCode:\(from.languageCode ?? "")\nfirstName:\(from.firstName)")
+        
+        let msg = """
+        Hi \(from.firstName)! You said: \(text).
+        ID:\(from.id)
+        username:\(from.username ?? "")
+        languageCode:\(from.languageCode ?? "")
+        firstName:\(from.firstName)
+        ChatId:\(message.chat.id)
+        """
+        
+        bot.sendMessageSync(chatId: ChatId.chat(message.chat.id),text: msg)
     }
 }
 
