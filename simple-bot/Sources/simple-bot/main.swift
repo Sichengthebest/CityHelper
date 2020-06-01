@@ -18,6 +18,7 @@ while let update = bot.nextUpdateSync() {
         message.chat.title:\(message.chat.title)
         message.replyToMessage?.chat.id:\(message.replyToMessage?.chat.id)
         message.replyToMessage?.from.id:\(message.replyToMessage?.from?.id)
+        message.date\(message.date)
         """
         
         bot.sendMessageSync(chatId: ChatId.chat(message.chat.id),text: msg)
