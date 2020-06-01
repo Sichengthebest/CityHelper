@@ -6,7 +6,6 @@ let bot = TelegramBot(token: token)
 
 while let update = bot.nextUpdateSync() {
     if let message = update.message, let from = message.from, let text = message.text {
-        
         let msg = """
         Hi \(from.firstName)! You said: \(text).
         from.id:\(from.id)
@@ -20,7 +19,7 @@ while let update = bot.nextUpdateSync() {
         message.replyToMessage?.from.id:\(message.replyToMessage?.from?.id)
         message.date\(message.date)
         """
-        
+
         bot.sendMessageSync(chatId: ChatId.chat(message.chat.id),text: msg)
     }
 }
