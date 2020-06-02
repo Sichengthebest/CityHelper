@@ -1,34 +1,62 @@
 import Foundation
 import TelegramBotSDK
 
-// 机器人的token
 let token = readToken(from: "CITYHELPER_TOKEN")
 let bot = TelegramBot(token: token)
-let router = Router(bot: bot)
-// 我们可能会向自己发送一些log或调试信息，使用LOGCHATID指定发送目标
-let logChatId : ChatId = ChatId.chat( Int64(readToken(from: "LOGCHATID")) ?? 0)
+var router = Router(bot: bot)
 
-func help(context: Context) -> Bool {
-    if !context.slash { return false }
-    context.respondAsync("""
-        我是Beaconsfield小助手，现在提供不了什么服务，你可以输入 /collection 感受一下我的技能。
-    """)
+let e = InlineKeyboardButton(text: "Englist",callbackData: "e")
+let f = InlineKeyboardButton(text: "Français", callbackData: "f")
+let c = InlineKeyboardButton(text: "中文",callbackData: "c")
+
+func onCallbackQueryc(context: Context) -> Bool {
+    let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,f]])
+
+    if let _ = context.update.callbackQuery {
+        context.bot.editMessageTextAsync(
+            chatId: ChatId.chat(context.fromId!),
+            messageId: context.message?.messageId,
+            text: "垃圾在周四（法定节假日除外）从早上7:00到下午6:00收集。应在收集日当天的上午7:00前或前一天的晚上9:00后，将垃圾桶放到路边。确保在晚上11:00之前从路边收回垃圾箱",
+            replyMarkup: ReplyMarkup.inlineKeyboardMarkup(markup)
+        )
+    }else{
+        context.respondAsync("垃圾在周四（法定节假日除外）从早上7:00到下午6:00收集。应在收集日当天的上午7:00前或前一天的晚上9:00后，将垃圾桶放到路边。确保在晚上11:00之前从路边收回垃圾箱", replyMarkup: ReplyMarkup.inlineKeyboardMarkup(markup))
+    }
     return true
 }
 
-router["collection"] = { context in
-    context.respondAsync("""
-        垃圾在周四（法定节假日外）的上午7点到下午6点进行收集。请你在头一天晚上9点后将垃圾桶放到路边，而在垃圾收集日当天晚上11点前从路边将垃圾桶收回。说明请见： https://www.beaconsfield.ca/en/garbage
+func onCallbackQuerye(context: Context) -> Bool {
+    let markup = InlineKeyboardMarkup(inlineKeyboard: [[c,f]])
 
-        绿色垃圾，20号高速以南周一上午7点开始收集，20号高速以北周三上午7点开始收集。说明详见： https://www.beaconsfield.ca/en/green-residue-and-leaves
-        """)
+    context.bot.editMessageTextAsync(
+        chatId: ChatId.chat(context.fromId!),
+        messageId: context.message?.messageId,
+        text: "Garbage is picked up Thursdays (except statutory holidays) from 7:00 a.m. to 6:00 p.m. The bin should be put out by the curb after 9:00 p.m. the night before or before 7:00 a.m. the day of the collection. Make sure to take the bin back from the curb the same day before 11:00 p.m.",
+        replyMarkup: ReplyMarkup.inlineKeyboardMarkup(markup)
+    )
     return true
 }
 
-router["start"] = help
-router["help"] = help
+func onCallbackQueryf(context: Context) -> Bool {
+    let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,c]])
+    
+    context.bot.editMessageTextAsync(
+        chatId: ChatId.chat(context.fromId!),
+        messageId: context.message?.messageId,
+        text: "Les jours de collecte sont les jeudis de 7 h à 18 h, sauf les jours fériés. Les bacs doivent être placés la veille à partir de 21 h ou avant 7 h le jour de la collecte, et doivent être rentrés le même jour avant 23 h.",
+        replyMarkup: ReplyMarkup.inlineKeyboardMarkup(markup)
+    )
+    return true
+}
 
-bot.sendMessageSync(chatId: logChatId, text: "开始运行")
+router["GARBAGE"] = onCallbackQueryc
+router[.callback_query(data: "c")] = onCallbackQueryc
+router[.callback_query(data: "e")] = onCallbackQuerye
+router[.callback_query(data: "f")] = onCallbackQueryf
+
 while let update = bot.nextUpdateSync() {
     try router.process(update: update)
 }
+
+
+fatalError("Server stopped due to error: \(String(describing: bot.lastError))")
