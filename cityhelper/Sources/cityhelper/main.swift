@@ -5,7 +5,7 @@ let token = readToken(from: "CITYHELPER_TOKEN")
 let bot = TelegramBot(token: token)
 var router = Router(bot: bot)
 
-let e = InlineKeyboardButton(text: "Englist",callbackData: "e")
+let e = InlineKeyboardButton(text: "English",callbackData: "e")
 let f = InlineKeyboardButton(text: "Français", callbackData: "f")
 let c = InlineKeyboardButton(text: "中文",callbackData: "c")
 
