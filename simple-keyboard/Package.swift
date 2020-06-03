@@ -16,8 +16,5 @@ let package = Package(
         .target(
             name: "simple-keyboard",
             dependencies: ["TelegramBotSDK"]),
-        .testTarget(
-            name: "simple-keyboardTests",
-            dependencies: ["simple-keyboard"]),
     ]
 )

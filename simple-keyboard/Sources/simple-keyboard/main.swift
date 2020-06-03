@@ -38,7 +38,7 @@ func onCallbackQuerye(context: Context) -> Bool {
 
 func onCallbackQueryf(context: Context) -> Bool {
     let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,c]])
-    
+
     context.bot.editMessageTextAsync(
         chatId: ChatId.chat(context.fromId!),
         messageId: context.message?.messageId,
