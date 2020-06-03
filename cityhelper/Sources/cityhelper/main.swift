@@ -8,9 +8,10 @@ var router = Router(bot: bot)
 let e = InlineKeyboardButton(text: "English",callbackData: "e")
 let f = InlineKeyboardButton(text: "Français", callbackData: "f")
 let c = InlineKeyboardButton(text: "中文",callbackData: "c")
+let u = InlineKeyboardButton(text: "Link",url: "https://www.beaconsfield.ca/en/garbage")
 
 func onCallbackQueryc(context: Context) -> Bool {
-    let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,f]])
+    let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,f,u]])
 
     if let _ = context.update.callbackQuery {
         context.bot.editMessageTextAsync(
@@ -26,7 +27,7 @@ func onCallbackQueryc(context: Context) -> Bool {
 }
 
 func onCallbackQuerye(context: Context) -> Bool {
-    let markup = InlineKeyboardMarkup(inlineKeyboard: [[c,f]])
+    let markup = InlineKeyboardMarkup(inlineKeyboard: [[c,f,u]])
 
     context.bot.editMessageTextAsync(
         chatId: .chat(context.chatId!),
@@ -38,7 +39,7 @@ func onCallbackQuerye(context: Context) -> Bool {
 }
 
 func onCallbackQueryf(context: Context) -> Bool {
-    let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,c]])
+    let markup = InlineKeyboardMarkup(inlineKeyboard: [[e,c,u]])
     
     context.bot.editMessageTextAsync(
         chatId: .chat(context.chatId!),
